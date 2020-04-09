@@ -26,48 +26,52 @@ merged <- merge(census, areas, by=c("GUID"))
 data_baldoyle <- merged %>% filter(str_detect(EDNAME, "Baldoyle"))
 #Drop the first three columns
 data_baldoyle <- data_baldoyle[ -c(1:3)]
-#Grouping the data
-data_baldoyle <- data.frame(t(colSums(Filter(is.numeric, data_baldoyle))))
 #Adding column Area so I can identify
 data_baldoyle$location <- "Baldoyle"
+#Grouping the data
+data_baldoyle_sum <- data.frame(t(colSums(Filter(is.numeric, data_baldoyle))))
+#Adding column Area so I can identify
+data_baldoyle_sum$location <- "Baldoyle"
+
 
 #Same for Carrickmines
 data_sandyford <- merged %>% filter(str_detect(EDNAME, "Dundrum-Sandyford"))
 #Drop the first three columns
 data_sandyford <- data_sandyford[ -c(1:3)]
-#Grouping the data
-data_sandyford <- data.frame(t(colSums(Filter(is.numeric, data_sandyford))))
 #Adding column Area so I can identify
 data_sandyford$location <- "Sandyford"
+#Grouping the data
+data_sandyford_sum <- data.frame(t(colSums(Filter(is.numeric, data_sandyford))))
+#Adding column Area so I can identify
+data_sandyford_sum$location <- "Sandyford"
+
 
 ######## Featuring engineering for each of the dataframes ########
-data_baldoyle$T0_4Total <- sum(data_baldoyle$T1_1AGE0T, data_baldoyle$T1_1AGE1T, data_baldoyle$T1_1AGE2T, data_baldoyle$T1_1AGE3T, data_baldoyle$T1_1AGE4T)
+data_baldoyle_sum$T0_4Total <- sum(data_baldoyle_sum$T1_1AGE0T, data_baldoyle_sum$T1_1AGE1T, data_baldoyle_sum$T1_1AGE2T, data_baldoyle_sum$T1_1AGE3T, data_baldoyle_sum$T1_1AGE4T)
 
-data_baldoyle$T5_9Total <- sum(data_baldoyle$T1_1AGE5T, data_baldoyle$T1_1AGE6T, data_baldoyle$T1_1AGE7T, data_baldoyle$T1_1AGE8T, data_baldoyle$T1_1AGE9T)
+data_baldoyle_sum$T5_9Total <- sum(data_baldoyle_sum$T1_1AGE5T, data_baldoyle_sum$T1_1AGE6T, data_baldoyle_sum$T1_1AGE7T, data_baldoyle_sum$T1_1AGE8T, data_baldoyle_sum$T1_1AGE9T)
 
-data_baldoyle$T10_14Total <- sum(data_baldoyle$T1_1AGE10T, data_baldoyle$T1_1AGE11T, data_baldoyle$T1_1AGE12T, data_baldoyle$T1_1AGE13T, data_baldoyle$T1_1AGE14T)
+data_baldoyle_sum$T10_14Total <- sum(data_baldoyle_sum$T1_1AGE10T, data_baldoyle_sum$T1_1AGE11T, data_baldoyle_sum$T1_1AGE12T, data_baldoyle_sum$T1_1AGE13T, data_baldoyle_sum$T1_1AGE14T)
 
-data_baldoyle$T15_19Total <- sum(data_baldoyle$T1_1AGE15T, data_baldoyle$T1_1AGE16T, data_baldoyle$T1_1AGE17T, data_baldoyle$T1_1AGE18T, data_baldoyle$T1_1AGE19T)
+data_baldoyle_sum$T15_19Total <- sum(data_baldoyle_sum$T1_1AGE15T, data_baldoyle_sum$T1_1AGE16T, data_baldoyle_sum$T1_1AGE17T, data_baldoyle_sum$T1_1AGE18T, data_baldoyle_sum$T1_1AGE19T)
 
-data_sandyford$T0_4Total <- sum(data_sandyford$T1_1AGE0T, data_sandyford$T1_1AGE1T, data_sandyford$T1_1AGE2T, data_sandyford$T1_1AGE3T, data_sandyford$T1_1AGE4T)
+data_sandyford_sum$T0_4Total <- sum(data_sandyford_sum$T1_1AGE0T, data_sandyford_sum$T1_1AGE1T, data_sandyford_sum$T1_1AGE2T, data_sandyford_sum$T1_1AGE3T, data_sandyford_sum$T1_1AGE4T)
 
-data_sandyford$T5_9Total <- sum(data_sandyford$T5_1AGE5T, data_sandyford$T1_1AGE6T, data_sandyford$T1_1AGE7T, data_sandyford$T1_1AGE8T, data_sandyford$T1_1AGE9T)
+data_sandyford_sum$T5_9Total <- sum(data_sandyford_sum$T5_1AGE5T, data_sandyford_sum$T1_1AGE6T, data_sandyford_sum$T1_1AGE7T, data_sandyford_sum$T1_1AGE8T, data_sandyford_sum$T1_1AGE9T)
 
-data_sandyford$T10_14Total <- sum(data_sandyford$T5_1AGE10T, data_sandyford$T1_1AGE11T, data_sandyford$T1_1AGE12T, data_sandyford$T1_1AGE13T, data_sandyford$T1_1AGE14T)
+data_sandyford_sum$T10_14Total <- sum(data_sandyford_sum$T5_1AGE10T, data_sandyford_sum$T1_1AGE11T, data_sandyford_sum$T1_1AGE12T, data_sandyford_sum$T1_1AGE13T, data_sandyford_sum$T1_1AGE14T)
 
-data_sandyford$T15_19Total <- sum(data_sandyford$T5_1AGE15T, data_sandyford$T1_1AGE16T, data_sandyford$T1_1AGE17T, data_sandyford$T1_1AGE18T, data_sandyford$T1_1AGE19T)
+data_sandyford_sum$T15_19Total <- sum(data_sandyford_sum$T5_1AGE15T, data_sandyford_sum$T1_1AGE16T, data_sandyford_sum$T1_1AGE17T, data_sandyford_sum$T1_1AGE18T, data_sandyford_sum$T1_1AGE19T)
 
 ######## Combining dataframes######## 
-data <- rbind(data_baldoyle, data_sandyford)
-help(write.csv)
+data_sum <- rbind(data_baldoyle_sum, data_sandyford_sum)
 
 ######## Loading in fixed data ######## 
-
-data_real <- read.csv("outbound.csv")
+data_sum_edited <- read.csv("outbound.csv")
 
 ######## Histogram of age distribution ######## 
-Age <- data_real[,c(806:810)]
-Age <- data_real[,c(91:104, 806:810)]
+Age <- data_sum_edited[,c(806:810)]
+Age <- data_sum_edited[,c(91:104, 806:810)]
 
 Age <- Age[, c(15:19, 1:14)]
 
@@ -86,4 +90,42 @@ ggplot(histBaldoyle, aes(x = Age_Bracket, y = value)) + geom_col(fill = "#2fc7da
   
 ggplot(histSandyford, aes(x = Age_Bracket, y = value)) + geom_col(fill = "#fcba15", colour = "black") + ggtitle("Age distribution of Sandyford") + ylab("Count") + xlab ("Age Bracket") + theme_classic()
 
+######## Descriptives of Average family sizes ######## 
+data_unsum <- rbind(data_baldoyle, data_sandyford)
 
+
+Family_Baldolye <- data_baldoyle[, c(820, 205:210)]
+summary(Family_Baldolye$T4_1_TF)
+
+Family_Sandyford <- data_sandyford[, c(820, 205:210)]
+summary(Family_Sandyford$T4_1_TF)
+
+Family_Both <- rbind(Family_Baldolye, Family_Sandyford)
+
+######## Histograms of Average family sizes ######## 
+ggplot(Family_Baldolye, aes(x=T4_1_TF)) + geom_histogram(bins=12, fill = "#2fc7da", colour = "black") + ggtitle("Total Family size distribution of Baldoyle") + ylab("Count") + xlab ("Family Size") + theme_classic() 
+
+ggplot(Family_Sandyford, aes(x=T4_1_TF)) + geom_histogram(bins=12, fill = "#fcba15", colour = "black") + ggtitle("Total Family size of Sandyford") + ylab("Count") + xlab ("Family Size") + theme_classic()
+
+ggplot(Family_Both, aes(x=T4_1_TF, color=location, fill=location)) + geom_histogram(bins=12, position="identity", alpha=0.5) + ggtitle("Total Family size of Sandyford") + ylab("Count") + xlab ("Family Size") + theme_classic()
+
+######## Boxplots of Average family sizes ########
+ggplot(Family_Both, aes(x=location, y=T4_1_TF, fill=location)) + geom_boxplot() + ggtitle("Total Family size of Sandyford") + ylab("Family Size") + xlab ("Location") + theme_classic()
+
+######## QQPlots for normality of Average family sizes ######## 
+#Baldoyle
+qqnorm(Family_Baldolye$T4_1_TF, frame = F)
+qqline(Family_Baldolye$T4_1_TF, col = "#2fc7da")
+
+#Sandyford
+qqnorm(Family_Sandyford$T4_1_TF, frame = F)
+qqline(Family_Sandyford$T4_1_TF, col = "#fcba15")
+
+######## Shapiro-Wilk test for normality ########
+shapiro.test(Family_Baldolye$T4_1_TF)
+shapiro.test(Family_Sandyford$T4_1_TF)
+
+######## Since data is normal Student's T-Test ######## 
+res.ftest <- var.test(T4_1_TF ~ location, data = Family_Both)
+res.ftest
+t.test(Family_Baldolye$T4_1_TF, Family_Sandyford$T4_1_TF, alternative = "two.sided", paired = F)
